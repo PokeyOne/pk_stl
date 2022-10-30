@@ -2,7 +2,8 @@
 name = "pk_stl"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
+description = "STL file parsing and writing."
+license = "MIT"
+repository = "https://github.com/PokeyOne/pk_stl"
+keywords = ["stl", "parse", "read", "write", "file"]
+categories = ["encoding", "graphics", "parser-implementations", "parsing", "rendering::data-formats"]
