@@ -1,3 +1,5 @@
+use crate::geometry::Vec3;
+
 use super::*;
 
 #[test]
