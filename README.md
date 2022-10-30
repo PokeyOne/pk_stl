@@ -5,16 +5,18 @@
 
 # Introduction<a id="sec-1"></a>
 
-pk\_stl is a Rust library for reading and writing STL files, and has no additional dependencies other than the standard library. It can read and write both ASCII and binary STL files (eventually; see section below).
+pk\_stl is a Rust library for reading and writing STL files, and has no additional dependencies other than the standard library. It can read and write both ASCII and binary STL files.
 
 ## STL File Support<a id="sec-1-1"></a>
 
-There are two main STL file formats: binary and ascii. This library will eventually support both formats full, however as this is in **very** early development, both are not fully supported yet.
+There are two main STL file formats: binary and ascii.
 
 |       | Binary | ASCII |
 |----- |------ |----- |
-| Read  | Yes    | No    |
+| Read  | Yes    | Yes   |
 | Write | Yes    | Yes   |
+
+Additionally, this library does not suppport any additional attributes attached to the triangles or model, but this features will be in a future release. If metadata from the header is needed, this library does provide access to the contents of the header.
 
 # Documentation<a id="sec-2"></a>
 
