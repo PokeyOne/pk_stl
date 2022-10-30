@@ -1,31 +1,62 @@
 use std::ops::{Add, Sub, Mul};
 
-#[derive(Debug, Clone, Copy)]
+/// A 3D vector.
+///
+/// This structure is used to provide extra mathematical operations on top of
+/// the standard 3D array or vector.
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vec3 {
+    /// The x coordinate of the vector.
     pub x: f32,
+    /// The y coordinate of the vector.
     pub y: f32,
+    /// The z coordinate of the vector.
     pub z: f32
 }
 
-#[derive(Debug, Clone, Copy)]
+/// A single triangle in a model.
+///
+/// This is the base 3D shape of an STL model. It is composed of a normal vector
+/// and three vertices.
+///
+/// The normal vector is not verified to be correct, and a model file may give
+/// incorrect values. Should you need to verify the normal vector, use the
+/// [`verify_normal`] method or the [`calculate_normal`] method.
+///
+/// The triangle can be initialized through an array of four vertices, where the
+/// first 3 are the vertices and the last is the normal vector. This is the
+/// same order that is used in the binary STL format.
+///
+/// # Examples
+///
+/// ```
+/// use pk_stl::geometry::Triangle;
+///
+/// let data = [
+///     [0.0, 0.0, 0.0],
+///     [1.0, 0.0, 0.0],
+///     [0.0, 1.0, 0.0],
+///     [0.0, 0.0, 1.0]
+/// ];
+/// let triangle = Triangle::from(data);
+///
+/// assert_eq!(triangle.normal, [0.0, 0.0, 1.0].into());
+/// assert_eq!(triangle.vertices, [
+///    [0.0, 0.0, 0.0].into(),
+///    [1.0, 0.0, 0.0].into(),
+///    [0.0, 1.0, 0.0].into()
+/// ]);
+/// ```
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Triangle {
+    /// The normal value of the triangle. Not verified to be correct.
     pub normal: Vec3,
+    /// The three vertices of the triangle.
     pub vertices: [Vec3; 3]
 }
 
-#[derive(Clone, Copy, Debug)]
-pub enum Line3 {
-    Vec {
-        origin: Vec3,
-        end: Vec3
-    },
-    Parameterized {
-        origin: Vec3,
-        direction: Vec3
-    }
-}
-
 impl Vec3 {
+    /// Create a new Vec3 from an array of three values.
     pub fn new(data: [f32; 3]) -> Vec3 {
         Vec3 {
             x: data[0],
@@ -34,6 +65,7 @@ impl Vec3 {
         }
     }
 
+    /// Create an array of three values from a Vec3.
     pub fn as_arr(&self) -> [f32; 3] {
         [self.x, self.y, self.z]
     }
@@ -78,68 +110,6 @@ impl Mul<f32> for Vec3 {
             y: self.y * scalar,
             z: self.z * scalar
         }
-    }
-}
-
-impl Line3 {
-    pub fn vertex_form(origin: Vec3, end: Vec3) -> Self {
-        Line3::Vec { origin, end }
-    }
-
-    pub fn parameterized_form(origin: Vec3, direction: Vec3) -> Self {
-        Line3::Parameterized { origin, direction }
-    }
-
-    pub fn into_parameterized(self) -> Self {
-        match self {
-            Self::Vec { origin, end } => {
-                let direction = end - origin;
-
-                Self::Parameterized { origin, direction }
-            }
-            Self::Parameterized { origin, direction } => {
-                Self::Parameterized { origin, direction }
-            }
-        }
-    }
-
-    pub fn origin(&self) -> Vec3 {
-        match self {
-            Self::Vec { origin, .. }
-            | Self::Parameterized { origin, .. } => {
-                *origin
-            }
-        }
-    }
-
-    pub fn end(&self) -> Vec3 {
-        match self {
-            Self::Vec { end, .. } => {
-                *end
-            }
-            Self::Parameterized { origin, direction } => {
-                *origin + *direction
-            }
-        }
-    }
-
-    pub fn direction(&self) -> Vec3 {
-        match self {
-            Self::Parameterized { direction, .. } => {
-                *direction
-            },
-            _ => self.into_parameterized().direction()
-        }
-    }
-}
-
-impl Triangle {
-    pub fn lines(&self) -> [Line3; 3] {
-        [
-            Line3::vertex_form(self.vertices[0], self.vertices[1]),
-            Line3::vertex_form(self.vertices[1], self.vertices[2]),
-            Line3::vertex_form(self.vertices[2], self.vertices[0])
-        ]
     }
 }
 
