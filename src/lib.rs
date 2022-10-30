@@ -131,8 +131,6 @@ fn parse_binary_stl(bytes: &[u8]) -> Result<StlModel> {
     let header: Vec<u8> = data.by_ref().take(80).map(|val| { *val }).collect();
     let header: String = String::from_utf8_lossy(&header).trim_end_matches("\0").to_string();
 
-    println!("utf8 of header: {}", header.escape_debug());
-
     let triangle_count = {
         let mut raw = [0; 4];
 
@@ -145,8 +143,6 @@ fn parse_binary_stl(bytes: &[u8]) -> Result<StlModel> {
 
         u32::from_le_bytes(raw)
     };
-
-    println!("Triangle count: {triangle_count}");
 
     let mut triangles: Vec<Triangle> = Vec::with_capacity(triangle_count as usize);
 
