@@ -16,7 +16,7 @@ development, both are not fully supported yet.
 |       | Binary | ASCII |
 |-------+--------+-------|
 | Read  | Yes    | No    |
-| Write | No     | Yes   |
+| Write | Yes    | Yes   |
 
 * Documentation
 

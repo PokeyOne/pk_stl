@@ -14,7 +14,7 @@ There are two main STL file formats: binary and ascii. This library will eventua
 |       | Binary | ASCII |
 |----- |------ |----- |
 | Read  | Yes    | No    |
-| Write | No     | Yes   |
+| Write | Yes    | Yes   |
 
 # Documentation<a id="sec-2"></a>
 

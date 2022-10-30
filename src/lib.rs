@@ -39,7 +39,7 @@ use error::Result;
 ///
 /// STL files are composed of a header and a list of triangles. This structure
 /// represents both of those things.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct StlModel {
     /// The main header line of the STL file.
     ///
@@ -67,6 +67,40 @@ impl StlModel {
             }
             writeln!(result, "    endloop").unwrap();
             writeln!(result, "endfacet").unwrap();
+        }
+
+        result
+    }
+
+    /// Convert the model to binary STL format.
+    ///
+    /// This will use the header of the model, trimmed with newlines removed.
+    pub fn as_binary(&self) -> Vec<u8> {
+        let mut result = Vec::new();
+
+        // Write the header
+        let header = self.header.trim().replace("\n", " ");
+        let header = header.as_bytes();
+        result.extend_from_slice(header);
+        result.resize(80, 0);
+
+        // Write the number of triangles
+        let num_triangles = self.triangles.len() as u32;
+        result.extend_from_slice(&num_triangles.to_le_bytes());
+
+        // Write each triangle
+        for triangle in &self.triangles {
+            result.extend_from_slice(&triangle.normal.x.to_le_bytes());
+            result.extend_from_slice(&triangle.normal.y.to_le_bytes());
+            result.extend_from_slice(&triangle.normal.z.to_le_bytes());
+
+            for v in &triangle.vertices {
+                result.extend_from_slice(&v.x.to_le_bytes());
+                result.extend_from_slice(&v.y.to_le_bytes());
+                result.extend_from_slice(&v.z.to_le_bytes());
+            }
+
+            result.extend_from_slice(&[0u8; 2]);
         }
 
         result
