@@ -20,8 +20,10 @@ pub struct Vec3 {
 /// and three vertices.
 ///
 /// The normal vector is not verified to be correct, and a model file may give
-/// incorrect values. Should you need to verify the normal vector, use the
-/// [`verify_normal`] method or the [`calculate_normal`] method.
+/// incorrect values. Currently there is no way to verify or calculate the normals
+/// using this library, however v0.4 will include methods
+/// [`verify_normal`] and [`calculate_normal`]. These methods will be able to
+/// verify and calculate normals.
 ///
 /// The triangle can be initialized through an array of four vertices, where the
 /// first 3 are the vertices and the last is the normal vector. This is the
