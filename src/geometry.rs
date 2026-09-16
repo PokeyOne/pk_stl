@@ -14,49 +14,6 @@ pub struct Vec3 {
     pub z: f32
 }
 
-/// A single triangle in a model.
-///
-/// This is the base 3D shape of an STL model. It is composed of a normal vector
-/// and three vertices.
-///
-/// The normal vector is not verified to be correct, and a model file may give
-/// incorrect values. Currently there is no way to verify or calculate the normals
-/// using this library, however v0.4 will include methods
-/// [`verify_normal`] and [`calculate_normal`]. These methods will be able to
-/// verify and calculate normals.
-///
-/// The triangle can be initialized through an array of four vertices, where the
-/// first 3 are the vertices and the last is the normal vector. This is the
-/// same order that is used in the binary STL format.
-///
-/// # Examples
-///
-/// ```
-/// use pk_stl::geometry::Triangle;
-///
-/// let data = [
-///     [0.0, 0.0, 0.0],
-///     [1.0, 0.0, 0.0],
-///     [0.0, 1.0, 0.0],
-///     [0.0, 0.0, 1.0]
-/// ];
-/// let triangle = Triangle::from(data);
-///
-/// assert_eq!(triangle.normal, [0.0, 0.0, 1.0].into());
-/// assert_eq!(triangle.vertices, [
-///    [0.0, 0.0, 0.0].into(),
-///    [1.0, 0.0, 0.0].into(),
-///    [0.0, 1.0, 0.0].into()
-/// ]);
-/// ```
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Triangle {
-    /// The normal value of the triangle. Not verified to be correct.
-    pub normal: Vec3,
-    /// The three vertices of the triangle.
-    pub vertices: [Vec3; 3]
-}
-
 impl Vec3 {
     /// Create a new Vec3 from an array of three values.
     pub fn new(data: [f32; 3]) -> Vec3 {
@@ -113,6 +70,49 @@ impl Mul<f32> for Vec3 {
             z: self.z * scalar
         }
     }
+}
+
+/// A single triangle in a model.
+///
+/// This is the base 3D shape of an STL model. It is composed of a normal vector
+/// and three vertices.
+///
+/// The normal vector is not verified to be correct, and a model file may give
+/// incorrect values. Currently there is no way to verify or calculate the normals
+/// using this library, however v0.4 will include methods
+/// [`verify_normal`] and [`calculate_normal`]. These methods will be able to
+/// verify and calculate normals.
+///
+/// The triangle can be initialized through an array of four vertices, where the
+/// first 3 are the vertices and the last is the normal vector. This is the
+/// same order that is used in the binary STL format.
+///
+/// # Examples
+///
+/// ```
+/// use pk_stl::geometry::Triangle;
+///
+/// let data = [
+///     [0.0, 0.0, 0.0],
+///     [1.0, 0.0, 0.0],
+///     [0.0, 1.0, 0.0],
+///     [0.0, 0.0, 1.0]
+/// ];
+/// let triangle = Triangle::from(data);
+///
+/// assert_eq!(triangle.normal, [0.0, 0.0, 1.0].into());
+/// assert_eq!(triangle.vertices, [
+///    [0.0, 0.0, 0.0].into(),
+///    [1.0, 0.0, 0.0].into(),
+///    [0.0, 1.0, 0.0].into()
+/// ]);
+/// ```
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Triangle {
+    /// The normal value of the triangle. Not verified to be correct.
+    pub normal: Vec3,
+    /// The three vertices of the triangle.
+    pub vertices: [Vec3; 3]
 }
 
 impl From<[[f32; 3]; 4]> for Triangle {
