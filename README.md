@@ -1,6 +1,7 @@
 - [Introduction](#sec-1)
   - [STL File Support](#sec-1-1)
 - [Documentation](#sec-2)
+- [Git Blame Ignore Revs](#sec-3)
 
 
 # Introduction<a id="sec-1"></a>
@@ -28,7 +29,7 @@ cargo doc --open
 
 Or visit <https://docs.rs/pk_stl/latest/pk_stl>
 
-# Git Blame Ignore Revs
+# Git Blame Ignore Revs<a id="sec-3"></a>
 
 There is a `.git-blame-ignore-revs` file, which you can tell git about using:
 
