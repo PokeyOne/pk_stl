@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
-use crate::StlModel;
 use crate::error::{Error, Result};
 use crate::geometry::Triangle;
+use crate::StlModel;
 
 #[cfg(test)]
 mod tests;
@@ -19,7 +19,7 @@ pub fn parse_ascii_stl(bytes: &[u8]) -> Result<StlModel> {
 
     let header = match tokens.next() {
         Some(Token::Header(header)) => header,
-        _ => return Err(Error::ascii("Invalid header"))
+        _ => return Err(Error::ascii("Invalid header")),
     };
 
     let mut triangles = Vec::new();
@@ -40,14 +40,20 @@ pub fn parse_ascii_stl(bytes: &[u8]) -> Result<StlModel> {
             return Err(Error::ascii("Expected endfacet keyword"));
         }
 
-        triangles.push(Triangle::from([normal, vertices[0], vertices[1], vertices[2]]));
+        triangles.push(Triangle::from([
+            normal,
+            vertices[0],
+            vertices[1],
+            vertices[2],
+        ]));
     }
 
     Ok(StlModel { header, triangles })
 }
 
 fn parse_normal<I>(tokens: &mut I) -> Result<[f32; 3]>
-    where I: Iterator<Item = Token>
+where
+    I: Iterator<Item = Token>,
 {
     let mut normal = [0.0; 3];
 
@@ -58,7 +64,7 @@ fn parse_normal<I>(tokens: &mut I) -> Result<[f32; 3]>
     for i in 0..3 {
         normal[i] = match tokens.next() {
             Some(Token::Float(f)) => f,
-            _ => return Err(Error::ascii("Expected normal float"))
+            _ => return Err(Error::ascii("Expected normal float")),
         }
     }
 
@@ -66,7 +72,8 @@ fn parse_normal<I>(tokens: &mut I) -> Result<[f32; 3]>
 }
 
 fn parse_vertices<I>(tokens: &mut I) -> Result<[[f32; 3]; 3]>
-    where I: Iterator<Item = Token>
+where
+    I: Iterator<Item = Token>,
 {
     let mut vertices = [[0.0; 3]; 3];
 
@@ -86,7 +93,7 @@ fn parse_vertices<I>(tokens: &mut I) -> Result<[[f32; 3]; 3]>
         for j in 0..3 {
             vertices[i][j] = match tokens.next() {
                 Some(Token::Float(f)) => f,
-                _ => return Err(Error::ascii("Expected vertex float"))
+                _ => return Err(Error::ascii("Expected vertex float")),
             }
         }
     }
@@ -103,19 +110,19 @@ fn tokenize_ascii_stl(bytes: &[u8]) -> Result<Vec<Token>> {
 
     let mut data = bytes.into_iter();
 
-    let solid_keyword = data.by_ref().take(6).map(|val| { *val }).collect::<Vec<u8>>();
+    let solid_keyword = data.by_ref().take(6).map(|val| *val).collect::<Vec<u8>>();
     if solid_keyword != b"solid " {
         return Err(Error::ascii("Model must start with 'solid ' keyword"));
     }
 
-    let mut data = data.map(|val| { *val as char }).peekable();
+    let mut data = data.map(|val| *val as char).peekable();
 
     let mut header = String::new();
 
     while let Some(c) = data.next() {
         match c {
             '\0' | '\r' | '\n' => break,
-            c => header.push(c)
+            c => header.push(c),
         }
     }
 
@@ -123,14 +130,7 @@ fn tokenize_ascii_stl(bytes: &[u8]) -> Result<Vec<Token>> {
 
     // Now parse the rest of the tokens dynamically
     let keyword_regex = KeywordRegex::compile(&[
-        "facet",
-        "outer",
-        "loop",
-        "vertex",
-        "normal",
-        "endloop",
-        "endfacet",
-        "endsolid"
+        "facet", "outer", "loop", "vertex", "normal", "endloop", "endfacet", "endsolid",
     ]);
 
     loop {
@@ -150,7 +150,13 @@ fn tokenize_ascii_stl(bytes: &[u8]) -> Result<Vec<Token>> {
                 let mut number = String::new();
 
                 while let Some(c) = data.peek() {
-                    if c.is_ascii_digit() || *c == '-' || *c == '+' || *c == '.' || *c == 'e' || *c == 'E' {
+                    if c.is_ascii_digit()
+                        || *c == '-'
+                        || *c == '+'
+                        || *c == '.'
+                        || *c == 'e'
+                        || *c == 'E'
+                    {
                         number.push(*c);
                         data.next();
                     } else {
@@ -158,7 +164,11 @@ fn tokenize_ascii_stl(bytes: &[u8]) -> Result<Vec<Token>> {
                     }
                 }
 
-                tokens.push(Token::Float(number.parse::<f32>().map_err(|_| { Error::ascii("Invalid float") })?));
+                tokens.push(Token::Float(
+                    number
+                        .parse::<f32>()
+                        .map_err(|_| Error::ascii("Invalid float"))?,
+                ));
                 continue;
             }
         }
@@ -179,7 +189,9 @@ fn tokenize_ascii_stl(bytes: &[u8]) -> Result<Vec<Token>> {
         if data.peek().is_none() {
             break;
         } else {
-            return Err(Error::ascii(format!("Unexpected character: {:?}", data.next()).as_str()));
+            return Err(Error::ascii(
+                format!("Unexpected character: {:?}", data.next()).as_str(),
+            ));
         }
     }
 
@@ -188,7 +200,7 @@ fn tokenize_ascii_stl(bytes: &[u8]) -> Result<Vec<Token>> {
 
 #[derive(Debug, Clone)]
 struct KeywordRegex {
-    root: KwNode
+    root: KwNode,
 }
 
 #[derive(Debug, Clone)]
@@ -198,7 +210,8 @@ enum KwNode {
 
 impl KeywordRegex {
     pub fn find<I>(&self, chars: &mut I) -> Option<String>
-        where I: Iterator<Item = char>
+    where
+        I: Iterator<Item = char>,
     {
         self.root.find(chars)
     }
@@ -216,7 +229,8 @@ impl KeywordRegex {
 
 impl KwNode {
     pub fn find<I>(&self, chars: &mut I) -> Option<String>
-        where I: Iterator<Item = char>
+    where
+        I: Iterator<Item = char>,
     {
         match self {
             KwNode::Branch(map) if map.is_empty() => Some(String::new()),
@@ -243,9 +257,9 @@ impl KwNode {
         if let Some(c) = chars.next() {
             match self {
                 KwNode::Branch(map) => {
-                    let node = map.entry(c).or_insert_with(|| {
-                        KwNode::Branch(HashMap::new())
-                    });
+                    let node = map
+                        .entry(c)
+                        .or_insert_with(|| KwNode::Branch(HashMap::new()));
 
                     node.add(&chars.collect::<String>());
                 }

@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub, Mul};
+use std::ops::{Add, Mul, Sub};
 
 /// A 3D vector.
 ///
@@ -11,7 +11,7 @@ pub struct Vec3 {
     /// The y coordinate of the vector.
     pub y: f32,
     /// The z coordinate of the vector.
-    pub z: f32
+    pub z: f32,
 }
 
 impl Vec3 {
@@ -20,7 +20,7 @@ impl Vec3 {
         Vec3 {
             x: data[0],
             y: data[1],
-            z: data[2]
+            z: data[2],
         }
     }
 
@@ -43,7 +43,7 @@ impl Add for Vec3 {
         Self {
             x: self.x + other.x,
             y: self.y + other.y,
-            z: self.z + other.z
+            z: self.z + other.z,
         }
     }
 }
@@ -55,7 +55,7 @@ impl Sub for Vec3 {
         Vec3 {
             x: self.x - other.x,
             y: self.y - other.y,
-            z: self.z - other.z
+            z: self.z - other.z,
         }
     }
 }
@@ -67,7 +67,7 @@ impl Mul<f32> for Vec3 {
         Vec3 {
             x: self.x * scalar,
             y: self.y * scalar,
-            z: self.z * scalar
+            z: self.z * scalar,
         }
     }
 }
@@ -112,18 +112,14 @@ pub struct Triangle {
     /// The normal value of the triangle. Not verified to be correct.
     pub normal: Vec3,
     /// The three vertices of the triangle.
-    pub vertices: [Vec3; 3]
+    pub vertices: [Vec3; 3],
 }
 
 impl From<[[f32; 3]; 4]> for Triangle {
     fn from(data: [[f32; 3]; 4]) -> Self {
         Triangle {
             normal: data[3].into(),
-            vertices: [
-                data[0].into(),
-                data[1].into(),
-                data[2].into()
-            ]
+            vertices: [data[0].into(), data[1].into(), data[2].into()],
         }
     }
 }

@@ -8,5 +8,8 @@ fn test_binary_cube() {
     assert_eq!(model.header, "OpenSCAD Model\n");
     assert_eq!(model.triangles.len(), 12);
 
-    assert_eq!(model.dimension_range(), Some(((0.0, 10.0), (0.0, 10.0), (0.0, 10.0))));
+    assert_eq!(
+        model.dimension_range(),
+        Some(((0.0, 10.0), (0.0, 10.0), (0.0, 10.0)))
+    );
 }

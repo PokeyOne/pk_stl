@@ -1,14 +1,16 @@
 use std::slice::Iter;
 
 use crate::error::{Error, Result};
+use crate::geometry::{Triangle, Vec3};
 use crate::StlModel;
-use crate::geometry::{Vec3, Triangle};
 
 pub fn parse_binary_stl(bytes: &[u8]) -> Result<StlModel> {
     let mut data = bytes.into_iter();
 
-    let header: Vec<u8> = data.by_ref().take(80).map(|val| { *val }).collect();
-    let header: String = String::from_utf8_lossy(&header).trim_end_matches("\0").to_string();
+    let header: Vec<u8> = data.by_ref().take(80).map(|val| *val).collect();
+    let header: String = String::from_utf8_lossy(&header)
+        .trim_end_matches("\0")
+        .to_string();
 
     let triangle_count = {
         let mut raw = [0; 4];
@@ -16,7 +18,7 @@ pub fn parse_binary_stl(bytes: &[u8]) -> Result<StlModel> {
         for i in 0..4 {
             raw[i] = match data.next() {
                 Some(val) => *val,
-                None => return Err(Error::binary("Invalid trianlge count byte sequence"))
+                None => return Err(Error::binary("Invalid trianlge count byte sequence")),
             }
         }
 
@@ -38,11 +40,7 @@ pub fn parse_binary_stl(bytes: &[u8]) -> Result<StlModel> {
 
         triangles.push(Triangle {
             normal: Vec3::new(normal),
-            vertices: [
-                Vec3::new(vert_a),
-                Vec3::new(vert_b),
-                Vec3::new(vert_c)
-            ]
+            vertices: [Vec3::new(vert_a), Vec3::new(vert_b), Vec3::new(vert_c)],
         })
     }
 
@@ -50,11 +48,7 @@ pub fn parse_binary_stl(bytes: &[u8]) -> Result<StlModel> {
 }
 
 fn read_f32_triplet<'a>(data: &mut Iter<'a, u8>) -> Result<[f32; 3]> {
-    Ok([
-        read_f32(data)?,
-        read_f32(data)?,
-        read_f32(data)?
-    ])
+    Ok([read_f32(data)?, read_f32(data)?, read_f32(data)?])
 }
 
 fn read_f32<'a>(data: &mut Iter<'a, u8>) -> Result<f32> {
@@ -62,7 +56,7 @@ fn read_f32<'a>(data: &mut Iter<'a, u8>) -> Result<f32> {
     for item in &mut raw {
         *item = match data.next() {
             Some(val) => *val,
-            None => return Err(Error::binary("Invalid trianlge count byte sequence"))
+            None => return Err(Error::binary("Invalid trianlge count byte sequence")),
         };
     }
 

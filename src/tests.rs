@@ -8,22 +8,54 @@ fn test_dimension_range() {
         header: String::new(),
         triangles: vec![
             Triangle {
-                normal: Vec3 { x: 0.0, y: 0.0, z: 1.0 },
+                normal: Vec3 {
+                    x: 0.0,
+                    y: 0.0,
+                    z: 1.0,
+                },
                 vertices: [
-                    Vec3 { x: 0.0, y: 0.0, z: 5.0 },
-                    Vec3 { x: 1.0, y: 0.0, z: 0.0 },
-                    Vec3 { x: 0.0, y: 1.0, z: 0.0 },
-                ]
+                    Vec3 {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 5.0,
+                    },
+                    Vec3 {
+                        x: 1.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    Vec3 {
+                        x: 0.0,
+                        y: 1.0,
+                        z: 0.0,
+                    },
+                ],
             },
             Triangle {
-                normal: Vec3 { x: 0.0, y: 0.0, z: 1.0 },
+                normal: Vec3 {
+                    x: 0.0,
+                    y: 0.0,
+                    z: 1.0,
+                },
                 vertices: [
-                    Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    Vec3 { x: 1.0, y: 0.0, z: -1.0 },
-                    Vec3 { x: 0.0, y: 1.0, z: 0.0 },
-                ]
+                    Vec3 {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    Vec3 {
+                        x: 1.0,
+                        y: 0.0,
+                        z: -1.0,
+                    },
+                    Vec3 {
+                        x: 0.0,
+                        y: 1.0,
+                        z: 0.0,
+                    },
+                ],
             },
-        ]
+        ],
     };
 
     assert_eq!(
@@ -36,7 +68,7 @@ fn test_dimension_range() {
 fn test_dimension_range_for_empty_model() {
     let model = StlModel {
         header: String::new(),
-        triangles: vec![]
+        triangles: vec![],
     };
 
     assert_eq!(model.dimension_range(), None);
@@ -48,22 +80,54 @@ fn test_as_binary() {
         header: String::new(),
         triangles: vec![
             Triangle {
-                normal: Vec3 { x: 0.0, y: 0.0, z: 1.0 },
+                normal: Vec3 {
+                    x: 0.0,
+                    y: 0.0,
+                    z: 1.0,
+                },
                 vertices: [
-                    Vec3 { x: 0.0, y: 0.0, z: 5.0 },
-                    Vec3 { x: 1.0, y: 0.0, z: 0.0 },
-                    Vec3 { x: 0.0, y: 1.0, z: 0.0 },
-                ]
+                    Vec3 {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 5.0,
+                    },
+                    Vec3 {
+                        x: 1.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    Vec3 {
+                        x: 0.0,
+                        y: 1.0,
+                        z: 0.0,
+                    },
+                ],
             },
             Triangle {
-                normal: Vec3 { x: 0.0, y: 0.0, z: 1.0 },
+                normal: Vec3 {
+                    x: 0.0,
+                    y: 0.0,
+                    z: 1.0,
+                },
                 vertices: [
-                    Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-                    Vec3 { x: 1.0, y: 0.0, z: -1.0 },
-                    Vec3 { x: 0.0, y: 1.0, z: 0.0 },
-                ]
+                    Vec3 {
+                        x: 0.0,
+                        y: 0.0,
+                        z: 0.0,
+                    },
+                    Vec3 {
+                        x: 1.0,
+                        y: 0.0,
+                        z: -1.0,
+                    },
+                    Vec3 {
+                        x: 0.0,
+                        y: 1.0,
+                        z: 0.0,
+                    },
+                ],
             },
-        ]
+        ],
     };
 
     let binary = model.as_binary();

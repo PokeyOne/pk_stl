@@ -5,10 +5,7 @@ fn test_single_keyword_regex() {
     let regex = KeywordRegex::compile(&["foo"]);
     println!("{:?}", regex);
 
-    assert_eq!(
-        regex.find(&mut "foo".chars()),
-        Some("foo".to_string())
-    );
+    assert_eq!(regex.find(&mut "foo".chars()), Some("foo".to_string()));
 }
 
 #[test]
@@ -16,18 +13,9 @@ fn test_multiple_keyword_regex() {
     let regex = KeywordRegex::compile(&["foo", "bar", "baz"]);
     println!("{:?}", regex);
 
-    assert_eq!(
-        regex.find(&mut "foo".chars()),
-        Some("foo".to_string())
-    );
-    assert_eq!(
-        regex.find(&mut "bar".chars()),
-        Some("bar".to_string())
-    );
-    assert_eq!(
-        regex.find(&mut "baz".chars()),
-        Some("baz".to_string())
-    );
+    assert_eq!(regex.find(&mut "foo".chars()), Some("foo".to_string()));
+    assert_eq!(regex.find(&mut "bar".chars()), Some("bar".to_string()));
+    assert_eq!(regex.find(&mut "baz".chars()), Some("baz".to_string()));
 }
 
 #[test]
@@ -36,20 +24,11 @@ fn test_keyword_regex_only_takes_what_it_needs() {
     println!("{:?}", regex);
 
     let mut foobar_iterator = "foobar".chars();
-    assert_eq!(
-        regex.find(&mut foobar_iterator),
-        Some("foo".to_string())
-    );
+    assert_eq!(regex.find(&mut foobar_iterator), Some("foo".to_string()));
     assert_eq!(foobar_iterator.next(), Some('b'));
 
-    assert_eq!(
-        regex.find(&mut "barbaz".chars()),
-        Some("bar".to_string())
-    );
-    assert_eq!(
-        regex.find(&mut "bazfoo".chars()),
-        Some("baz".to_string())
-    );
+    assert_eq!(regex.find(&mut "barbaz".chars()), Some("bar".to_string()));
+    assert_eq!(regex.find(&mut "bazfoo".chars()), Some("baz".to_string()));
 }
 
 #[test]
@@ -89,7 +68,7 @@ endsolid foo";
         Token::Float(5.0),
         Token::Keyword("endloop".to_string()),
         Token::Keyword("endfacet".to_string()),
-        Token::Keyword("endsolid".to_string())
+        Token::Keyword("endsolid".to_string()),
     ];
 
     assert_eq!(tokens, expected_tokens);
@@ -111,16 +90,12 @@ endsolid foo";
 
     let expected_stl = StlModel {
         header: "foo".to_string(),
-        triangles: vec![
-            Triangle::from(
-                [
-                    [0.0, 0.0, 1.0],
-                    [0.0, 0.0, 5.0],
-                    [1.0, 0.0, 5.0],
-                    [0.0, 1.0, 5.0],
-                ]
-            )
-        ],
+        triangles: vec![Triangle::from([
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, 5.0],
+            [1.0, 0.0, 5.0],
+            [0.0, 1.0, 5.0],
+        ])],
     };
 
     assert_eq!(stl, expected_stl);

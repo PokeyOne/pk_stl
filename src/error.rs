@@ -7,7 +7,7 @@ pub struct Error {
     /// file.
     binary: bool,
     /// The error message.
-    message: String
+    message: String,
 }
 
 /// The result type for this crate.
@@ -18,7 +18,7 @@ impl Error {
     pub fn binary(msg: &str) -> Error {
         Error {
             binary: true,
-            message: msg.to_string()
+            message: msg.to_string(),
         }
     }
 
@@ -26,7 +26,7 @@ impl Error {
     pub fn ascii(msg: &str) -> Error {
         Error {
             binary: false,
-            message: msg.to_string()
+            message: msg.to_string(),
         }
     }
 }

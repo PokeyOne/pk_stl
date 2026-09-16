@@ -23,17 +23,17 @@
 
 use std::fmt::Write;
 
-pub mod geometry;
 pub mod error;
+pub mod geometry;
 
-mod binary;
 mod ascii;
+mod binary;
 
 #[cfg(test)]
 mod tests;
 
-use geometry::Triangle;
 use error::Result;
+use geometry::Triangle;
 
 /// The main structure of this crate. It represents a single STL model.
 ///
@@ -47,7 +47,7 @@ pub struct StlModel {
     /// but this is not required. The header is not used by this crate.
     pub header: String,
     /// Each triangle in the model.
-    pub triangles: Vec<Triangle>
+    pub triangles: Vec<Triangle>,
 }
 
 impl StlModel {
@@ -60,7 +60,12 @@ impl StlModel {
         writeln!(result, "solid {}", self.header.trim().replace("\n", " ")).unwrap();
 
         for triangle in &self.triangles {
-            writeln!(result, "facet normal {:e} {:e} {:e}", triangle.normal.x, triangle.normal.y, triangle.normal.z).unwrap();
+            writeln!(
+                result,
+                "facet normal {:e} {:e} {:e}",
+                triangle.normal.x, triangle.normal.y, triangle.normal.z
+            )
+            .unwrap();
             writeln!(result, "    outer loop").unwrap();
             for v in &triangle.vertices {
                 writeln!(result, "        vertex {:e} {:e} {:e}", v.x, v.y, v.z).unwrap();
@@ -133,11 +138,15 @@ impl StlModel {
                         maybe_range = Some((
                             (x_range.0.min(vertex.x), x_range.1.max(vertex.x)),
                             (y_range.0.min(vertex.y), y_range.1.max(vertex.y)),
-                            (z_range.0.min(vertex.z), z_range.1.max(vertex.z))
+                            (z_range.0.min(vertex.z), z_range.1.max(vertex.z)),
                         ));
-                    },
+                    }
                     None => {
-                        maybe_range = Some(((vertex.x, vertex.x), (vertex.y, vertex.y), (vertex.z, vertex.z)));
+                        maybe_range = Some((
+                            (vertex.x, vertex.x),
+                            (vertex.y, vertex.y),
+                            (vertex.z, vertex.z),
+                        ));
                     }
                 }
             }
