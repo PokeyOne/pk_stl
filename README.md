@@ -27,3 +27,15 @@ cargo doc --open
 ```
 
 Or visit <https://docs.rs/pk_stl/latest/pk_stl>
+
+# Git Blame Ignore Revs
+
+There is a `.git-blame-ignore-revs` file, which you can tell git about using:
+
+``` bash
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+```
+
+This tells git blame to skip over commits in that file, such as large code
+reformats which would otherwise polute the history.
+
