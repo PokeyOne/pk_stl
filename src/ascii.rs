@@ -40,12 +40,7 @@ pub fn parse_ascii_stl(bytes: &[u8]) -> Result<StlModel> {
             return Err(Error::ascii("Expected endfacet keyword"));
         }
 
-        triangles.push(Triangle::from([
-            normal,
-            vertices[0],
-            vertices[1],
-            vertices[2],
-        ]));
+        triangles.push(Triangle::new(normal.into(), vertices.map(|x| x.into())));
     }
 
     Ok(StlModel { header, triangles })

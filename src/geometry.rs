@@ -146,31 +146,6 @@ impl Div<f32> for Vec3 {
 /// incorrect values. See [`Triangle::verify_normal`] and
 /// [`Triangle::calculate_normal`] for verifying and calculating the normal, and
 /// [`Triangle::recalculate_normal`] to simply replace the stored normal.
-///
-/// The triangle can be initialized through an array of four vertices, where the
-/// first 3 are the vertices and the last is the normal vector. This is the
-/// same order that is used in the binary STL format.
-///
-/// # Examples
-///
-/// ```
-/// use pk_stl::geometry::Triangle;
-///
-/// let data = [
-///     [0.0, 0.0, 0.0],
-///     [1.0, 0.0, 0.0],
-///     [0.0, 1.0, 0.0],
-///     [0.0, 0.0, 1.0]
-/// ];
-/// let triangle = Triangle::from(data);
-///
-/// assert_eq!(triangle.normal, [0.0, 0.0, 1.0].into());
-/// assert_eq!(triangle.vertices, [
-///    [0.0, 0.0, 0.0].into(),
-///    [1.0, 0.0, 0.0].into(),
-///    [0.0, 1.0, 0.0].into()
-/// ]);
-/// ```
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Triangle {
     /// The normal value of the triangle. Not verified to be correct.
@@ -252,15 +227,6 @@ impl Triangle {
             NormalVerificationResult::Mismatch {
                 angle_rad: cos.acos(),
             }
-        }
-    }
-}
-
-impl From<[[f32; 3]; 4]> for Triangle {
-    fn from(data: [[f32; 3]; 4]) -> Self {
-        Triangle {
-            normal: data[3].into(),
-            vertices: [data[0].into(), data[1].into(), data[2].into()],
         }
     }
 }

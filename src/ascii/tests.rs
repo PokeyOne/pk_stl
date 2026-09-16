@@ -90,12 +90,14 @@ endsolid foo";
 
     let expected_stl = StlModel {
         header: "foo".to_string(),
-        triangles: vec![Triangle::from([
-            [0.0, 0.0, 1.0],
-            [0.0, 0.0, 5.0],
-            [1.0, 0.0, 5.0],
-            [0.0, 1.0, 5.0],
-        ])],
+        triangles: vec![Triangle::new(
+            [0.0, 0.0, 1.0].into(),
+            [
+                [0.0, 0.0, 5.0].into(),
+                [1.0, 0.0, 5.0].into(),
+                [0.0, 1.0, 5.0].into(),
+            ],
+        )],
     };
 
     assert_eq!(stl, expected_stl);
